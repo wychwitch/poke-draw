@@ -36,13 +36,9 @@ export default {
          {genStart:810,
          genEnd:906
         },
-        {genStart:906,
-         genEnd:909
-        },
         
       ],
       pokemon: require('pokemon'),
-      pokemonApi: require("pokeapi-js-wrapper"),
       pokeImage:""
     }
   },
@@ -52,18 +48,9 @@ export default {
       this.genn = parseInt(this.checkedGens[Math.floor((Math.random() * this.checkedGens.length))]);
       
       this.selectedMon = parseInt([Math.floor((Math.random() * ( this.pokegens[this.genn].genEnd - this.pokegens[this.genn].genStart)) + this.pokegens[this.genn].genStart)]);
-      let pokepokeApi = require("pokeapi-js-wrapper");
-      let pokeApi = new pokepokeApi.Pokedex();
 
 
-      let test = pokeApi.getPokemonByName(this.selectedMon).then(function(response){
-        
-        console.log(response)
-        
-      })
-      console.log(test);
-
-      this.pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${this.selectedMon}.png`
+      this.pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.selectedMon}.png`
 
 
       //console.log(this.pokeImage)
@@ -97,9 +84,10 @@ export default {
   <br>
   <input type="checkbox" id="gen1" v-model="checkedGens" value="7">
   <label>8</label>
-  <br>
-  <input type="checkbox" id="gen1" v-model="checkedGens" value="8">
-  <label>9</label>
+  <br><br>
+{{ pokemon.getName(selectedMon) }}
+<br>
+<img v-bind:src="pokeImage">
 <p>
   {{checkedGens}}
   </p>
@@ -116,10 +104,10 @@ export default {
     <br>
     {{pokegens[1].genStart}}
     <br><br>
-    {{ pokemon.getName(selectedMon) }}
+    
 
     <br><br>
     
   </p>
-  <img v-bind:src="pokeImage">
+  
 </template>
