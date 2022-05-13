@@ -2,14 +2,20 @@
 
 const P = new Pokedex.Pokedex();
 let genCheckBoxes = document.querySelectorAll(".genOptions");
+let allowedRegionalForms = document.getElementById("regional-forms");
+let allowedSuperForms = document.getElementById("super-forms");
+let allowedAltForms = document.getElementById("alt-forms");
 let genArray = [];
 let pokeArray = [];
-let randomPoke;
+
+const ranNum = function (num, offset = 0) {
+  return Math.trunc(Math.random() * num + offset);
+};
+
 const getPokemonArray = async function (generation) {
   return generation.pokemon_species;
 };
 let timer;
-
 const getPokemonByGen = async function (genNum) {
   return await P.getGenerationByName(genNum).then(async function (response) {
     let selectedGens = [];
@@ -26,14 +32,31 @@ const getPokemonByGen = async function (genNum) {
   });
 };
 
+const regionalForm = function (name) {};
+
 const pokemonHandler = async function () {
   let checkedGenArray = Array.from(genCheckBoxes).filter((gen) => gen.checked);
-  genArray = checkedGenArray.map((gen) => Number(gen.value));
-  console.log(genArray);
-  pokeArray = await getPokemonByGen(genArray);
-  console.log(pokeArray);
-};
+  let pokemonName = pokeArray[ranNum(pokeArray.length)].name;
+  let randomPoke = await P.getPokemonSpeciesByName(pokemonName);
 
+  genArray = checkedGenArray.map((gen) => Number(gen.value));
+  pokeArray = await getPokemonByGen(genArray);
+
+  if (randomPoke.varieties.length > 1) {
+    let pokemonForms = randomPoke.varieties;
+    if (!allowedSuperForms.checked) {
+      //filter out the bad forms by checking the name
+      pokemonForms = pokemonForms.filter((forme) => forme.pokemon.name);
+    }
+    randomPoke = pokemonForms[ranNum(pokemonForms.length)];
+    pokemonName = randomPoke.pokemon.name;
+  } else {
+    pokemonName = randomPoke.name;
+  }
+  const randomPokeFull = await P.getPokemonByName(pokemonName);
+  console.log(randomPokeFull);
+  console.log(randomPoke);
+};
 function countDown(i, callback) {
   //callback = callback || function(){};
   timer = setInterval(function () {
@@ -43,14 +66,9 @@ function countDown(i, callback) {
 }
 
 (async () => {
-  const golduck = await P.getPokemonByName("golduck");
-  console.log(golduck);
   document
     .getElementById("PokeStart")
     .addEventListener("click", async function () {
-      const eevee = await P.getPokemonByName("eevee");
-      console.log(eevee);
-      console.log("aaafuc");
       pokemonHandler();
     });
 })();
