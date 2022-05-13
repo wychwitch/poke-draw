@@ -5,7 +5,6 @@ let genCheckBoxes = document.querySelectorAll(".genOptions");
 let disAllowedRegionalForms = document.getElementById("regional-forms");
 let disAllowedSuperForms = document.getElementById("super-forms");
 let disAllowedAltForms = document.getElementById("alt-forms");
-let genArray = [];
 let pokeArray = [];
 
 const ranNum = function (num) {
@@ -34,9 +33,9 @@ const getPokemonByGen = async function (genNum) {
   });
 };
 
-const filterGens = function (g) {
-  let checkedGenArray = filterGens(Array.from(g));
-  let genArrayFiltered = checkedGenArray.map((gen) => Number(gen.value));
+const filterGens = function (gens) {
+  let checkedGenArray = Array.from(gens).filter((g) => g.checked);
+  let genArrayFiltered = checkedGenArray.map((g) => Number(g.value));
   if (genArrayFiltered.length > 0) {
     console.log(genArrayFiltered);
     console.log("returning gen array");
@@ -47,7 +46,7 @@ const filterGens = function (g) {
 };
 
 const pokemonHandler = async function () {
-  genArray = filterGens(genCheckBoxes);
+  let genArray = filterGens(genCheckBoxes);
   pokeArray = await getPokemonByGen(genArray);
   console.log(pokeArray);
 
