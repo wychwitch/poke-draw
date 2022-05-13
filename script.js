@@ -1,6 +1,8 @@
 "use strict";
 
 const P = new Pokedex.Pokedex();
+const pokeImage = document.getElementById("poke-image");
+const pokeName = document.getElementById("poke-name");
 let genCheckBoxes = document.querySelectorAll(".genOptions");
 let disAllowedRegionalForms = document.getElementById("regional-forms");
 let disAllowedSuperForms = document.getElementById("super-forms");
@@ -97,6 +99,11 @@ const pokemonHandler = async function () {
   const randomPokeFull = await P.getPokemonByName(pokemonName);
   //console.log(randomPokeFull);
   console.log(pokemonName);
+
+  //make new function to display image based on if the user chose original game sprites, or official art
+  pokeImage.src =
+    randomPokeFull.sprites.other["official-artwork"].front_default;
+  pokeName.textContent = randomPokeFull.name;
 };
 function countDown(i, callback) {
   //callback = callback || function(){};
