@@ -2,14 +2,16 @@
 
 const P = new Pokedex.Pokedex();
 let genCheckBoxes = document.querySelectorAll(".genOptions");
-let allowedRegionalForms = document.getElementById("regional-forms");
-let allowedSuperForms = document.getElementById("super-forms");
-let allowedAltForms = document.getElementById("alt-forms");
+let disAllowedRegionalForms = document.getElementById("regional-forms");
+let disAllowedSuperForms = document.getElementById("super-forms");
+let disAllowedAltForms = document.getElementById("alt-forms");
 let genArray = [];
 let pokeArray = [];
 
-const ranNum = function (num, offset = 0) {
-  return Math.trunc(Math.random() * num + offset);
+const ranNum = function (num) {
+  const rnum = Math.trunc(Math.random() * num);
+  console.log(`random num: ${rnum} ${num}`);
+  return rnum;
 };
 
 const getPokemonArray = async function (generation) {
@@ -32,30 +34,70 @@ const getPokemonByGen = async function (genNum) {
   });
 };
 
-const regionalForm = function (name) {};
+const filterGens = function (g) {
+  let checkedGenArray = filterGens(Array.from(g));
+  let genArrayFiltered = checkedGenArray.map((gen) => Number(gen.value));
+  if (genArrayFiltered.length > 0) {
+    console.log(genArrayFiltered);
+    console.log("returning gen array");
+    return genArrayFiltered;
+  } else {
+    return [1, 2, 3, 4, 5, 6, 7, 8];
+  }
+};
 
 const pokemonHandler = async function () {
-  let checkedGenArray = Array.from(genCheckBoxes).filter((gen) => gen.checked);
+  genArray = filterGens(genCheckBoxes);
+  pokeArray = await getPokemonByGen(genArray);
+  console.log(pokeArray);
+
   let pokemonName = pokeArray[ranNum(pokeArray.length)].name;
   let randomPoke = await P.getPokemonSpeciesByName(pokemonName);
-
-  genArray = checkedGenArray.map((gen) => Number(gen.value));
-  pokeArray = await getPokemonByGen(genArray);
-
   if (randomPoke.varieties.length > 1) {
     let pokemonForms = randomPoke.varieties;
-    if (!allowedSuperForms.checked) {
-      //filter out the bad forms by checking the name
-      pokemonForms = pokemonForms.filter((forme) => forme.pokemon.name);
+    if (disAllowedSuperForms.checked) {
+      const formTypes = ["-mega", "-gmax"];
+      //filter out the bad forms by checking the Type
+      pokemonForms = pokemonForms.filter(
+        (forme) =>
+          !formTypes.some((formType) => forme.pokemon.name.includes(formType))
+      );
     }
+    if (disAllowedRegionalForms.checked) {
+      const formTypes = ["-galar", "-alola"];
+      pokemonForms = pokemonForms.filter(
+        (forme) =>
+          !formTypes.some((formType) => forme.pokemon.name.includes(formType))
+      );
+    }
+    if (disAllowedAltForms.checked) {
+      const formTypes = ["-galar", "-alola", "-mega", "-gmax"];
+      console.log("disalowed alt forms entered");
+      console.log(
+        pokemonForms[0].pokemon.name,
+        pokemonForms[0].is_default,
+        formTypes.some(
+          (formType) =>
+            pokemonForms[0].pokemon.name.includes(formType) ||
+            pokemonForms[0].is_default
+        )
+      );
+      pokemonForms = pokemonForms.filter((forme) =>
+        formTypes.some(
+          (formType) =>
+            forme.pokemon.name.includes(formType) || forme.is_default
+        )
+      );
+    }
+    console.log("after");
+    console.log(pokemonForms);
     randomPoke = pokemonForms[ranNum(pokemonForms.length)];
+
     pokemonName = randomPoke.pokemon.name;
-  } else {
-    pokemonName = randomPoke.name;
   }
   const randomPokeFull = await P.getPokemonByName(pokemonName);
-  console.log(randomPokeFull);
-  console.log(randomPoke);
+  //console.log(randomPokeFull);
+  console.log(pokemonName);
 };
 function countDown(i, callback) {
   //callback = callback || function(){};
