@@ -1,11 +1,38 @@
 "use strict";
-let pokeArray = [];
-let pokeArraySize;
+
+const P = new Pokedex.Pokedex();
 let genCheckBoxes = document.querySelectorAll(".genOptions");
 let genArray = [];
+let pokeArray = [];
 let randomPoke;
-
+const getPokemonArray = async function (generation) {
+  return generation.pokemon_species;
+};
 let timer;
+
+const getPokemonByGen = async function (genNum) {
+  return await P.getGenerationByName(genNum).then(async function (response) {
+    let selectedGens = [];
+    if (Array.isArray(response)) {
+      for (let i = 0; i < response.length; i++) {
+        const pokeArr = await getPokemonArray(response[i]);
+        selectedGens.push(...pokeArr);
+      }
+    } else {
+      const pokeArr = await getPokemonArray(response);
+      selectedGens.push(...pokeArr);
+    }
+    return selectedGens;
+  });
+};
+
+const pokemonHandler = async function () {
+  let checkedGenArray = Array.from(genCheckBoxes).filter((gen) => gen.checked);
+  genArray = checkedGenArray.map((gen) => Number(gen.value));
+  console.log(genArray);
+  pokeArray = await getPokemonByGen(genArray);
+  console.log(pokeArray);
+};
 
 function countDown(i, callback) {
   //callback = callback || function(){};
@@ -15,47 +42,15 @@ function countDown(i, callback) {
   }, 1000);
 }
 
-const P = new Pokedex.Pokedex();
-const getPokemonArray = function (generation) {
-  return generation.pokemon_species;
-};
-const getPokemonByGen = function (genNum) {
-  return P.getGenerationByName(genNum).then(function (response) {
-    let selectedGens = [];
-    if (Array.isArray(response)) {
-      for (let i = 0; i < response.length; i++) {
-        selectedGens.push(...getPokemonArray(response[i]));
-      }
-    } else {
-      selectedGens.push(...getPokemonArray(response));
-    }
-    return selectedGens;
-  });
-};
-
-const pokemonHandler = function () {
-  let checkedGenArray = Array.from(genCheckBoxes).filter((gen) => gen.checked);
-  genArray = checkedGenArray.map((gen) => Number(gen.value));
-  console.log(genArray);
-  pokeArray = getPokemonByGen(genArray);
-
-  pokeArray.then((response) => {
-    console.log(response);
-    P.getPokemonByName(
-      response[Math.trunc(Math.random() * response.length)].name
-    ).then((response) => {
-      console.log(response);
-      document.getElementById("poke-image").src =
-        response.sprites.other["official-artwork"].front_default;
+(async () => {
+  const golduck = await P.getPokemonByName("golduck");
+  console.log(golduck);
+  document
+    .getElementById("PokeStart")
+    .addEventListener("click", async function () {
+      const eevee = await P.getPokemonByName("eevee");
+      console.log(eevee);
+      console.log("aaafuc");
+      pokemonHandler();
     });
-  });
-};
-console.log(genCheckBoxes);
-
-document.getElementById("PokeStart").addEventListener("click", function () {
-  countDown(10, pokemonHandler);
-});
-
-P.getPokemonByName("meowth").then((response) => {
-  console.log(response);
-});
+})();
