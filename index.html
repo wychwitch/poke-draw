@@ -11,45 +11,66 @@
             <title>Home</title>
         </header>
         <main>
-            <section id="pokesection">
-                <div id="pokemon-image">
-                    <h1 id="timerNum">0</h1>
-                    <img id="poke-image" src="">
-                    <span id="loading-wheel" class="iconify hidden" data-icon="eos-icons:bubble-loading"></span>
-                    <p id="poke-name">Name</p>
-                    <input type="checkbox" id="Options">
-                    <label for="Options">options</label>
+            <section id="poke-container">
+                <div id="poke-display">
+                    <h1 id="timerNum" class="hidden"></h1>
+                    <h2 id="poke-name"></h2>
+                    <img id="poke-image" src="" class="hidden">
+                    
                 </div>
                 <div id="options">
-                    <input type="checkbox" id="gen1" class="genOptions" value="1">
-                    <label for="gen1">Gen 1</label>
-                    <input type="checkbox" id="gen2" class="genOptions" value="2">
-                    <label for="gen1">Gen 2</label>
-                    <input type="checkbox" id="gen3" class="genOptions" value="3">
-                    <label for="gen1">Gen 3</label>
-                    <input type="checkbox" id="gen4" class="genOptions" value="4">
-                    <label for="gen1">Gen 4</label>
-                    <input type="checkbox" id="gen5" class="genOptions" value="5">
-                    <label for="gen1">Gen 5</label>
-                    <input type="checkbox" id="gen6" class="genOptions" value="6">
-                    <label for="gen1">Gen 6</label>
-                    <input type="checkbox" id="gen7" class="genOptions" value="7">
-                    <label for="gen1">Gen 7</label>
-                    <input type="checkbox" id="gen8" class="genOptions" value="8">
-                    <label for="gen1">Gen 8</label>
-
+                    <label for="time-value">Number of seconds</label>
+                    <input type="number" id="time-value">
+                    
+                    
+                    <section id="gens">
+                        <div>
+                            <input type="checkbox" id="gen1" class="genOptions" value="1">
+                            <label for="gen1">Gen 1</label>
+                        </div>
+                        <div>
+                        <input type="checkbox" id="gen2" class="genOptions" value="2">
+                        <label for="gen2">Gen 2</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen3" class="genOptions" value="3">
+                        <label for="gen3">Gen 3</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen4" class="genOptions" value="4">
+                        <label for="gen4">Gen 4</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen5" class="genOptions" value="5">
+                        <label for="gen5">Gen 5</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen6" class="genOptions" value="6">
+                        <label for="gen6">Gen 6</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen7" class="genOptions" value="7">
+                        <label for="gen7">Gen 7</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="gen8" class="genOptions" value="8">
+                        <label for="gen8">Gen 8</label>
+                    </div>
+                    </section>
+                    
+                    <section id="forms">
                     <input type="checkbox" id="regional-forms">
-                    <label for="regionalForms">Regional Forms</label>
+                    <label for="regionalForms">No Regional Forms</label>
                     <input type="checkbox" id="super-forms">
-                    <label for="super-forms">Mega / Gmax forms</label>
+                    <label for="super-forms">No Mega / Gmax</label>
                     <input type="checkbox" id="alt-forms">
-                    <label for="back">Alternate Forms</label>
-
-                    <input type="checkbox" id="back">
-                    <label for="back">back</label>
+                    <label for="back">No Alternate Forms</label>    
+                    </section>
+                    <input type="button" value="Get random pokemon!" id="PokeStart">
                 </div>
+                
             </section>
-            <input type="button" value="PokeStart" id="PokeStart">
+            
         </main>
         <footer>
         </footer>

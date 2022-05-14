@@ -1,3 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+*{box-sizing: border-box;}
+:root{
+    --red: hsl(0, 80%, 70%);
+    --mainFont: 'Nunito', sans-serif;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mainFont);
+    
+}
+
+h1, h2{
+    font-weight: 900;
+}
+
+label{
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.5;
+}
+#poke-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#poke-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50vh;
+    height: 50vh;
+    background-color: var(--red);
+    border-radius: 2rem;
+}
+#poke-display img{
+    width: 40vh;
+    height: 40vh;
+}
+
+#options{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    width: 40vh;
+    height: 20vh;
+}
+
+
+
+#options input[type="number"]{
+    grid-column: 2/6;
+    grid-row: 1/2;
+    height: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    accent-color: var(--red);
+}
+
+#options label[for="time-value"]{
+    text-align: center;
+    grid-column: 1/7;
+}
+#options #gens{
+    grid-column: 1/4;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#options #forms{
+    grid-column: 4/7;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    grid-template-rows: auto;
+    align-items: center;
+    justify-content: center;
+}
+#forms input{
+    justify-self: right;
+    grid-column: 1/2;
+    accent-color: var(--red);
+}
+#gens input{
+    accent-color: var(--red);
+}
+
+
+#forms label{
+    justify-self: left;
+    grid-column: 2/5;
+}
+#options #PokeStart{
+    grid-column: 2/6;
+}
+
 .hidden{
     display:none;
+}
+
+#gens div{
+    margin: 0.5rem;
 }

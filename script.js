@@ -4,10 +4,13 @@ const P = new Pokedex.Pokedex();
 const pokeImage = document.getElementById("poke-image");
 const pokeName = document.getElementById("poke-name");
 const loadingWheel = document.getElementById("loading-wheel");
-
+const timerNum = document.getElementById("timerNum");
+const timeValue = document.getElementById("time-value");
 let disAllowedRegionalForms = document.getElementById("regional-forms");
 let disAllowedSuperForms = document.getElementById("super-forms");
 let disAllowedAltForms = document.getElementById("alt-forms");
+let randomPokeFull;
+let randomPokeName;
 
 const filterPokemonList = function (
   pokemonArr,
@@ -33,6 +36,8 @@ const ranNum = function (num) {
 
 const setPokeImage = function (imageUrl) {
   pokeImage.src = imageUrl;
+  pokeImage.classList.remove("hidden");
+  timerNum.classList.add("hidden");
 };
 
 const getPokemonArray = async function (generation) {
@@ -71,11 +76,13 @@ const pokemonHandler = async function () {
   const genCheckBoxes = document.querySelectorAll(".genOptions");
   const genArray = filterGens(genCheckBoxes);
   let pokeArray = await getPokemonByGen(genArray);
-  let randomPokeName = pokeArray[ranNum(pokeArray.length)].name;
+  randomPokeName = await pokeArray[ranNum(pokeArray.length)].name;
   let randomPoke = await P.getPokemonSpeciesByName(randomPokeName);
+  console.log(`from array ${randomPokeName}`);
 
   if (randomPoke.varieties.length > 1) {
     let pokemonForms = randomPoke.varieties;
+
     if (disAllowedSuperForms.checked) {
       //filter out the bad forms returning forms that ARENT these types
       pokemonForms = filterPokemonList(pokemonForms, ["-mega", "-gmax"]);
@@ -94,14 +101,11 @@ const pokemonHandler = async function () {
         false
       );
     }
-    console.log("after");
-    console.log(pokemonForms);
     randomPoke = pokemonForms[ranNum(pokemonForms.length)];
-
     randomPokeName = randomPoke.pokemon.name;
   }
 
-  const randomPokeFull = await P.getPokemonByName(randomPokeName);
+  randomPokeFull = await P.getPokemonByName(randomPokeName);
 
   console.log(randomPokeName);
 
@@ -110,26 +114,39 @@ const pokemonHandler = async function () {
   const pokeImageUrl =
     randomPokeFull.sprites.other["official-artwork"].front_default;
 
-  pokeName.textContent = await randomPokeFull.name;
-
-  countDown(5, () => {
+  countDown(Number(timeValue.value), async () => {
     setPokeImage(pokeImageUrl);
   });
 };
 
-const countDown = function (i, callback) {
-  //callback = callback || function(){};
-  loadingWheel.classList.remove("hidden");
+const countDown = async function (i, callback) {
+  //callback = callback || function(){}
+  const pokemonName = await randomPokeName;
+  let isNameSet = false;
+
   let timer = setInterval(function () {
-    document.getElementById("timerNum").textContent = i;
+    if (!isNameSet) {
+      pokeName.textContent = pokemonName;
+      isNameSet = true;
+    }
+    timerNum.innerHTML = i;
     i-- || (clearInterval(timer), callback());
   }, 1000);
 };
 
+const resetState = function () {
+  pokeImage.src = "";
+  pokeImage.classList.add("hidden");
+  timerNum.classList.remove("hidden");
+  pokeName.textContent = "";
+};
+
 (async () => {
-  document
-    .getElementById("PokeStart")
-    .addEventListener("click", async function () {
-      pokemonHandler();
-    });
+  document.getElementById("PokeStart").addEventListener("click", function () {
+    timerNum.innerHTML =
+      '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"></span>';
+    console.log(timerNum.innerHTML);
+    resetState();
+    pokemonHandler();
+  });
 })();
