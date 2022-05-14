@@ -3,11 +3,27 @@
 const P = new Pokedex.Pokedex();
 const pokeImage = document.getElementById("poke-image");
 const pokeName = document.getElementById("poke-name");
-let genCheckBoxes = document.querySelectorAll(".genOptions");
+const loadingWheel = document.getElementById("loading-wheel");
+
 let disAllowedRegionalForms = document.getElementById("regional-forms");
 let disAllowedSuperForms = document.getElementById("super-forms");
 let disAllowedAltForms = document.getElementById("alt-forms");
-let pokeArray = [];
+
+const filterPokemonList = function (
+  pokemonArr,
+  pokemonFormArr,
+  notReverse = false
+) {
+  if (notReverse) {
+    return pokemonArr.filter((forme) =>
+      pokemonFormArr.some((formType) => forme.pokemon.name.includes(formType))
+    );
+  }
+  return pokemonArr.filter(
+    (forme) =>
+      !pokemonFormArr.some((formType) => forme.pokemon.name.includes(formType))
+  );
+};
 
 const ranNum = function (num) {
   const rnum = Math.trunc(Math.random() * num);
@@ -15,10 +31,14 @@ const ranNum = function (num) {
   return rnum;
 };
 
+const setPokeImage = function (imageUrl) {
+  pokeImage.src = imageUrl;
+};
+
 const getPokemonArray = async function (generation) {
   return generation.pokemon_species;
 };
-let timer;
+
 const getPokemonByGen = async function (genNum) {
   return await P.getGenerationByName(genNum).then(async function (response) {
     let selectedGens = [];
@@ -48,70 +68,63 @@ const filterGens = function (gens) {
 };
 
 const pokemonHandler = async function () {
-  let genArray = filterGens(genCheckBoxes);
-  pokeArray = await getPokemonByGen(genArray);
-  console.log(pokeArray);
+  const genCheckBoxes = document.querySelectorAll(".genOptions");
+  const genArray = filterGens(genCheckBoxes);
+  let pokeArray = await getPokemonByGen(genArray);
+  let randomPokeName = pokeArray[ranNum(pokeArray.length)].name;
+  let randomPoke = await P.getPokemonSpeciesByName(randomPokeName);
 
-  let pokemonName = pokeArray[ranNum(pokeArray.length)].name;
-  let randomPoke = await P.getPokemonSpeciesByName(pokemonName);
   if (randomPoke.varieties.length > 1) {
     let pokemonForms = randomPoke.varieties;
     if (disAllowedSuperForms.checked) {
-      const formTypes = ["-mega", "-gmax"];
-      //filter out the bad forms by checking the Type
-      pokemonForms = pokemonForms.filter(
-        (forme) =>
-          !formTypes.some((formType) => forme.pokemon.name.includes(formType))
-      );
+      //filter out the bad forms returning forms that ARENT these types
+      pokemonForms = filterPokemonList(pokemonForms, ["-mega", "-gmax"]);
     }
+
     if (disAllowedRegionalForms.checked) {
-      const formTypes = ["-galar", "-alola"];
-      pokemonForms = pokemonForms.filter(
-        (forme) =>
-          !formTypes.some((formType) => forme.pokemon.name.includes(formType))
-      );
+      //filter out the bad forms returning forms that ARENT these types
+      pokemonForms = filterPokemonList(pokemonForms, ["-galar", "-alola"]);
     }
+
     if (disAllowedAltForms.checked) {
-      const formTypes = ["-galar", "-alola", "-mega", "-gmax"];
-      console.log("disalowed alt forms entered");
-      console.log(
-        pokemonForms[0].pokemon.name,
-        pokemonForms[0].is_default,
-        formTypes.some(
-          (formType) =>
-            pokemonForms[0].pokemon.name.includes(formType) ||
-            pokemonForms[0].is_default
-        )
-      );
-      pokemonForms = pokemonForms.filter((forme) =>
-        formTypes.some(
-          (formType) =>
-            forme.pokemon.name.includes(formType) || forme.is_default
-        )
+      //filter out the bad forms returning forms that ARE these types OR default
+      pokemonForms = filterPokemonList(
+        pokemonForms,
+        ["-galar", "-alola", "-mega", "-gmax"],
+        false
       );
     }
     console.log("after");
     console.log(pokemonForms);
     randomPoke = pokemonForms[ranNum(pokemonForms.length)];
 
-    pokemonName = randomPoke.pokemon.name;
+    randomPokeName = randomPoke.pokemon.name;
   }
-  const randomPokeFull = await P.getPokemonByName(pokemonName);
-  //console.log(randomPokeFull);
-  console.log(pokemonName);
+
+  const randomPokeFull = await P.getPokemonByName(randomPokeName);
+
+  console.log(randomPokeName);
 
   //make new function to display image based on if the user chose original game sprites, or official art
-  pokeImage.src =
+
+  const pokeImageUrl =
     randomPokeFull.sprites.other["official-artwork"].front_default;
-  pokeName.textContent = randomPokeFull.name;
+
+  pokeName.textContent = await randomPokeFull.name;
+
+  countDown(5, () => {
+    setPokeImage(pokeImageUrl);
+  });
 };
-function countDown(i, callback) {
+
+const countDown = function (i, callback) {
   //callback = callback || function(){};
-  timer = setInterval(function () {
+  loadingWheel.classList.remove("hidden");
+  let timer = setInterval(function () {
     document.getElementById("timerNum").textContent = i;
     i-- || (clearInterval(timer), callback());
   }, 1000);
-}
+};
 
 (async () => {
   document
