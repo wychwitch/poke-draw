@@ -6,6 +6,7 @@ const pokeName = document.getElementById("poke-name");
 const loadingWheel = document.getElementById("loading-wheel");
 const timerNum = document.getElementById("timerNum");
 const timeValue = document.getElementById("time-value");
+const submitButton = document.getElementById("PokeStart");
 let disAllowedRegionalForms = document.getElementById("regional-forms");
 let disAllowedSuperForms = document.getElementById("super-forms");
 let disAllowedAltForms = document.getElementById("alt-forms");
@@ -38,6 +39,7 @@ const setPokeImage = function (imageUrl) {
   pokeImage.src = imageUrl;
   pokeImage.classList.remove("hidden");
   timerNum.classList.add("hidden");
+  submitButton.removeAttribute("disabled", "");
 };
 
 const getPokemonArray = async function (generation) {
@@ -109,7 +111,7 @@ const pokemonHandler = async function () {
 
   console.log(randomPokeName);
 
-  //make new function to display image based on if the user chose original game sprites, or official art
+  //TODO make new function to display image based on if the user chose original game sprites, or official art
 
   const pokeImageUrl =
     randomPokeFull.sprites.other["official-artwork"].front_default;
@@ -142,10 +144,11 @@ const resetState = function () {
 };
 
 (async () => {
-  document.getElementById("PokeStart").addEventListener("click", function () {
+  submitButton.addEventListener("click", function () {
     timerNum.innerHTML =
-      '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"></span>';
+      '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"  data-width="100"></span>';
     console.log(timerNum.innerHTML);
+    submitButton.setAttribute("disabled", "");
     resetState();
     pokemonHandler();
   });

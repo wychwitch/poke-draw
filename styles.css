@@ -3,6 +3,7 @@
 *{box-sizing: border-box;}
 :root{
     --red: hsl(0, 80%, 70%);
+    --blue: hsl(204, 80%, 70%);
     --mainFont: 'Nunito', sans-serif;
 }
 
@@ -105,6 +106,15 @@ label{
 }
 #options #PokeStart{
     grid-column: 2/6;
+    font-size: 1.2rem;
+    height: 100%;
+    background-color: var(--red);
+    border: solid 1px var(--red);
+    border-radius: 0.5rem;
+}
+
+#options #PokeStart:disabled{
+    background-color: #ddd;
 }
 
 .hidden{
