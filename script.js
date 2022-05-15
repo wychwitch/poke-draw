@@ -3,21 +3,18 @@
 const P = new Pokedex.Pokedex();
 const pokeImage = document.getElementById("poke-image");
 const pokeName = document.getElementById("poke-name");
-const loadingWheel = document.getElementById("loading-wheel");
 const timerNum = document.getElementById("timerNum");
-const timeValue = document.getElementById("time-value");
 const submitButton = document.getElementById("PokeStart");
-let disAllowedRegionalForms = document.getElementById("regional-forms");
-let disAllowedSuperForms = document.getElementById("super-forms");
-let disAllowedAltForms = document.getElementById("alt-forms");
-let randomPokeFull;
+
 let randomPokeName;
 
+//Filters the pokemon list
 const filterPokemonList = function (
   pokemonArr,
   pokemonFormArr,
   notReverse = false
 ) {
+  // if the filter doesnt need to be reversed
   if (notReverse) {
     return pokemonArr.filter((forme) =>
       pokemonFormArr.some((formType) => forme.pokemon.name.includes(formType))
@@ -29,12 +26,14 @@ const filterPokemonList = function (
   );
 };
 
-const ranNum = function (num) {
-  const rnum = Math.trunc(Math.random() * num);
-  console.log(`random num: ${rnum} ${num}`);
+// random number function
+const ranNum = function (max, min) {
+  const rnum = Math.trunc(Math.random() * max);
+  console.log(`random num: ${rnum} ${max}`);
   return rnum;
 };
 
+// set's the pokemon img src to the correct url, also hides and unhides
 const setPokeImage = function (imageUrl) {
   pokeImage.src = imageUrl;
   pokeImage.classList.remove("hidden");
@@ -42,13 +41,16 @@ const setPokeImage = function (imageUrl) {
   submitButton.removeAttribute("disabled", "");
 };
 
+// just grabs the species
 const getPokemonArray = async function (generation) {
   return generation.pokemon_species;
 };
 
+// Grabs all the pookemon in the generation(s)
 const getPokemonByGen = async function (genNum) {
   return await P.getGenerationByName(genNum).then(async function (response) {
     let selectedGens = [];
+    // if the response is an array of generations
     if (Array.isArray(response)) {
       for (let i = 0; i < response.length; i++) {
         const pokeArr = await getPokemonArray(response[i]);
@@ -62,9 +64,13 @@ const getPokemonByGen = async function (genNum) {
   });
 };
 
+// filters out any gens that weren't selected
 const filterGens = function (gens) {
+  // makes a new array from all the generation checkboxes that were checked
   let checkedGenArray = Array.from(gens).filter((g) => g.checked);
   let genArrayFiltered = checkedGenArray.map((g) => Number(g.value));
+
+  // if no generations were selected, return them all
   if (genArrayFiltered.length > 0) {
     console.log(genArrayFiltered);
     console.log("returning gen array");
@@ -74,14 +80,22 @@ const filterGens = function (gens) {
   }
 };
 
+// The big boi main function. Probably needs to be split up into others
 const pokemonHandler = async function () {
+  const disAllowedRegionalForms = document.getElementById("regional-forms");
+  const disAllowedSuperForms = document.getElementById("super-forms");
+  const disAllowedAltForms = document.getElementById("alt-forms");
+  const timeValue = document.getElementById("time-value");
   const genCheckBoxes = document.querySelectorAll(".genOptions");
   const genArray = filterGens(genCheckBoxes);
+  let randomPokeFull;
   let pokeArray = await getPokemonByGen(genArray);
   randomPokeName = await pokeArray[ranNum(pokeArray.length)].name;
+
   let randomPoke = await P.getPokemonSpeciesByName(randomPokeName);
   console.log(`from array ${randomPokeName}`);
 
+  // if there's more than one form, select randomly from them
   if (randomPoke.varieties.length > 1) {
     let pokemonForms = randomPoke.varieties;
 
@@ -96,7 +110,7 @@ const pokemonHandler = async function () {
     }
 
     if (disAllowedAltForms.checked) {
-      //filter out the bad forms returning forms that ARE these types OR default
+      //filter out the bad forms returning forms that ARE these types OR the default form
       pokemonForms = filterPokemonList(
         pokemonForms,
         ["-galar", "-alola", "-mega", "-gmax"],
@@ -127,6 +141,7 @@ const countDown = async function (i, callback) {
   let isNameSet = false;
 
   let timer = setInterval(function () {
+    // sets the name in the html, only once
     if (!isNameSet) {
       pokeName.textContent = formatName(pokemonName);
       isNameSet = true;
@@ -136,6 +151,7 @@ const countDown = async function (i, callback) {
   }, 1000);
 };
 
+// dead dove
 const resetState = function () {
   pokeImage.src = "";
   pokeImage.classList.add("hidden");
@@ -143,6 +159,7 @@ const resetState = function () {
   pokeName.textContent = "";
 };
 
+// capitalizes and optionally reformats name
 const formatName = function (name) {
   const formNames = { Alola: "n", Galar: "ian" };
 
@@ -161,12 +178,12 @@ const formatName = function (name) {
   return name;
 };
 
+// main function, must be async
 (async () => {
   console.log(formatName("moewth-galar"));
   submitButton.addEventListener("click", function () {
     timerNum.innerHTML =
       '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"  data-width="100"></span>';
-    console.log(timerNum.innerHTML);
     submitButton.setAttribute("disabled", "");
     resetState();
     pokemonHandler();
