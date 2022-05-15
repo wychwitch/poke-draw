@@ -4,6 +4,7 @@
 :root{
     --red: hsl(0, 80%, 70%);
     --blue: hsl(204, 80%, 70%);
+    --purple: hsl(262, 80%, 70%);
     --mainFont: 'Nunito', sans-serif;
 }
 
@@ -123,4 +124,22 @@ label{
 
 #gens div{
     margin: 0.5rem;
+}
+
+a{
+    text-decoration: none;
+    color: var(--purple);
+    border-bottom: 2px var(--purple) solid;
+    transition: all 100ms ease-in-out;
+}
+a::before{
+    content: url('https://api.iconify.design/fa-solid/link.svg?color=%23a275f0&width=10');
+    
+    /* prevents the link symbol from being on the wrong line! */
+    white-space: nowrap;
+    display: inline;
+    /* animates the following css */
+}
+a:hover{
+    border-bottom: 4px var(--purple) solid;
 }
