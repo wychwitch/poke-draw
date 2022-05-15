@@ -128,7 +128,7 @@ const countDown = async function (i, callback) {
 
   let timer = setInterval(function () {
     if (!isNameSet) {
-      pokeName.textContent = pokemonName;
+      pokeName.textContent = formatName(pokemonName);
       isNameSet = true;
     }
     timerNum.innerHTML = i;
@@ -143,7 +143,26 @@ const resetState = function () {
   pokeName.textContent = "";
 };
 
+const formatName = function (name) {
+  const formNames = { Alola: "n", Galar: "ian" };
+
+  name = name.charAt(0).toUpperCase() + name.substring(1);
+
+  if (name.includes("-") && !name.includes("Porygon") && name !== "Ho-oh") {
+    const dashIndex = name.indexOf("-");
+    let formName =
+      name.charAt(dashIndex + 1).toUpperCase() + name.substring(dashIndex + 2);
+    const cleanName = name.substring(0, dashIndex);
+    if (Object.keys(formNames).includes(formName)) {
+      formName += formNames[formName];
+    }
+    return `${formName} ${cleanName}`;
+  }
+  return name;
+};
+
 (async () => {
+  console.log(formatName("moewth-galar"));
   submitButton.addEventListener("click", function () {
     timerNum.innerHTML =
       '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"  data-width="100"></span>';
