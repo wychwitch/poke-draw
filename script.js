@@ -5,6 +5,7 @@ const pokeImage = document.getElementById("poke-image");
 const pokeName = document.getElementById("poke-name");
 const timerNum = document.getElementById("timerNum");
 const submitButton = document.getElementById("PokeStart");
+const optionsButton = document.getElementById("toggle-options");
 
 let randomPokeName;
 
@@ -187,5 +188,11 @@ const formatName = function (name) {
     submitButton.setAttribute("disabled", "");
     resetState();
     pokemonHandler();
+  });
+  optionsButton.addEventListener("click", function () {
+    console.log("click!");
+    console.log(document.getElementById("gens"));
+    document.getElementById("gens").classList.toggle("hidden");
+    document.getElementById("forms").classList.toggle("hidden");
   });
 })();
