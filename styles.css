@@ -59,7 +59,7 @@ label{
     grid-gap: 0.5rem;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    width: 90%;
 }
 
 
@@ -165,6 +165,9 @@ a:hover{
 
 
 @media (min-width:900px) {
+    #options{
+        width: 50%;
+    }
     #poke-display{
         min-width: unset;
         min-height: unset;
@@ -188,16 +191,19 @@ a:hover{
         min-height: unset;
     }
     #gens{
-        grid-column: 3/4;
+        grid-column: 2/4;
     }
     input[type="number"]{
         grid-column: 3/5;
     }
     #forms{
-        grid-column: 4/5;
+        grid-column: 4/6;
     }
-    input[type="button"]{
-        grid-column: 3/5;
+    #PokeStart{
+        grid-column: 2/4;
+    }
+    #toggle-options{
+        grid-column: 4/6;
     }
 }
 
