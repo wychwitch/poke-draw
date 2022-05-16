@@ -17,12 +17,16 @@ main{
     
 }
 
-h2{
-    font-size: 4rem;
+h1{
+    font-size: 3rem;
 }
 
 #timerNum{
     font-size: 5rem;
+}
+
+.giant-text{
+    font-size: 6rem;
 }
 
 h1, h2{
@@ -45,8 +49,9 @@ label{
 }
 
 #poke-display{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     align-items: center;
     justify-content: center;
     width: 20rem;
@@ -54,10 +59,34 @@ label{
     background-color: var(--red);
     border-radius: 2rem;
 }
+#poke-display #poke-name{
+    grid-column: 1/7;
+    margin:0;
+    text-align: center;
+}
 #poke-display img{
-    width: 90%;
+    grid-column: 2/6;
+    width: 100%;
     height: auto;
 }
+#poke-display #timerNum{
+    grid-column: 2/6;
+    text-align: center;
+    margin: 0;
+}
+
+#poke-display .center-location{
+    grid-column: 2/6;
+    grid-row: 2/3;
+    text-align: center;
+}
+
+#poke-display .bottom-location{
+    grid-column: 2/6;
+    grid-row: 3/4;
+    text-align: center;
+}
+
 
 #options{
     padding-top: 2rem;

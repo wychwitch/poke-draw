@@ -40,6 +40,9 @@ const setPokeImage = function (imageUrl) {
   pokeImage.classList.remove("hidden");
   timerNum.classList.add("hidden");
   submitButton.removeAttribute("disabled", "");
+  pokeName.classList.toggle("center-location");
+  pokeName.classList.toggle("giant-text");
+  timerNum.classList.toggle("bottom-location");
 };
 
 // just grabs the species
@@ -144,6 +147,9 @@ const countDown = async function (i, callback) {
   let timer = setInterval(function () {
     // sets the name in the html, only once
     if (!isNameSet) {
+      pokeName.classList.toggle("center-location");
+      pokeName.classList.toggle("giant-text");
+      timerNum.classList.toggle("bottom-location");
       pokeName.textContent = formatName(pokemonName);
       isNameSet = true;
     }
@@ -184,7 +190,7 @@ const formatName = function (name) {
   console.log(formatName("moewth-galar"));
   submitButton.addEventListener("click", function () {
     timerNum.innerHTML =
-      '<span id="loading-wheel" class="iconify" data-icon="eos-icons:bubble-loading"  data-width="100"></span>';
+      '<span id="loading-wheel" class="iconify center-location" data-icon="eos-icons:bubble-loading"  data-width="100"></span>';
     submitButton.setAttribute("disabled", "");
     resetState();
     pokemonHandler();
