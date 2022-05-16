@@ -18,7 +18,7 @@ main{
 }
 
 h1{
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 #timerNum{
@@ -32,8 +32,8 @@ h1{
 h1, h2{
     font-weight: 900;
 }
-
-label{
+    
+label, p{
     font-size: 1.2rem;
     font-weight: 300;
     line-height: 1.5;
@@ -221,6 +221,9 @@ a:hover{
     }
     .giant-text{
         font-size: 6rem;
+    }
+    h1{
+        font-size: 3rem;
     }
 }
 
