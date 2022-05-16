@@ -1,86 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-    </head>
-    <body>
-        <header>
-            <meta charset="utf-8">
-            <meta name="viewport" content="device=device-width, initial-scale=1.0">
-            <script src="https://unpkg.com/pokeapi-js-wrapper@1.2.2/dist/index.js"></script>
-            <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-            <link href="./styles.css" rel="stylesheet" type="text/css">
-            <title>Draw That Pokemon!!</title>
-        </header>
-        <main>
-            <section id="poke-container">
-                <div id="poke-display">
-                    <h1 id="timerNum" class="hidden"></h1>
-                    <h2 id="poke-name"></h2>
-                    <img id="poke-image" src="" class="hidden">
-                    
-                </div>
-                <div id="options">
-                    <label for="time-value">Number of seconds</label>
-                    <input type="number" id="time-value" min="0" max="5000" value="30">
-                    
-                    
-                    <section id="gens">
-                        <div>
-                            <input type="checkbox" id="gen1" class="genOptions" value="1">
-                            <label for="gen1">Gen 1</label>
-                        </div>
-                        <div>
-                        <input type="checkbox" id="gen2" class="genOptions" value="2">
-                        <label for="gen2">Gen 2</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen3" class="genOptions" value="3">
-                        <label for="gen3">Gen 3</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen4" class="genOptions" value="4">
-                        <label for="gen4">Gen 4</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen5" class="genOptions" value="5">
-                        <label for="gen5">Gen 5</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen6" class="genOptions" value="6">
-                        <label for="gen6">Gen 6</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen7" class="genOptions" value="7">
-                        <label for="gen7">Gen 7</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="gen8" class="genOptions" value="8">
-                        <label for="gen8">Gen 8</label>
-                    </div>
-                    </section>
-                    
-                    <section id="forms">
-                    <input type="checkbox" id="regional-forms">
-                    <label for="regional-forms">No Regional Forms</label>
-                    <input type="checkbox" id="super-forms">
-                    <label for="super-forms">No Mega / Gmax</label>
-                    <input type="checkbox" id="alt-forms">
-                    <label for="alt-forms">No Alternate Forms</label>    
-                    </section>
-                    <input type="button" value="Randomize!" id="PokeStart">
-                    <input type="button" value="Toggle Options" id="toggle-options">
-                </div>
-                <div>
-                <p class="centered">If you run into any bugs <a href="https://github.com/wychwitch/pokedraw/issues"> please leave an issue on the github!</a></p>
-                <p class="centered">made by <a href="https://atelierwy.ch">wych(witch)</a> 💜</p>
-                </div>
-                
-            </section>
-            
-        </main>
-        <footer>
-            
-        </footer>
-        <script src="./script.js"></script>
-    </body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="device=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/pokeapi-js-wrapper@1.2.2/dist/index.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <link href="./styles.css" rel="stylesheet" type="text/css">
+    <title>Draw That Pokemon!!</title>
+    <link rel="icon" type="image/png" sizes="196x196" href="pwa/favicon-196.png">
+    <meta name="msapplication-square70x70logo" content="pwa/mstile-icon-128.png">
+    <meta name="msapplication-square150x150logo" content="pwa/mstile-icon-270.png">
+    <meta name="msapplication-square310x310logo" content="pwa/mstile-icon-558.png">
+    <meta name="msapplication-wide310x150logo" content="pwa/mstile-icon-558-270.png">
+    <link rel="apple-touch-icon" href="pwa/apple-icon-180.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1668-2224.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1620-2160.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1284-2778.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-1242-2208.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="pwa/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  </head>
+  <body>
+    <header>
+    </header>
+    <main>
+      <section id="poke-container">
+        <div id="poke-display">
+          <h1 id="timerNum" class="hidden"></h1>
+          <h2 id="poke-name"></h2>
+          <img id="poke-image" src="" class="hidden">
+        </div>
+        <div id="options">
+          <label for="time-value">Number of seconds</label>
+          <input type="number" id="time-value" min="0" max="5000" value="30">
+          <section id="gens">
+            <div>
+              <input type="checkbox" id="gen1" class="genOptions" value="1">
+              <label for="gen1">Gen 1</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen2" class="genOptions" value="2">
+              <label for="gen2">Gen 2</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen3" class="genOptions" value="3">
+              <label for="gen3">Gen 3</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen4" class="genOptions" value="4">
+              <label for="gen4">Gen 4</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen5" class="genOptions" value="5">
+              <label for="gen5">Gen 5</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen6" class="genOptions" value="6">
+              <label for="gen6">Gen 6</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen7" class="genOptions" value="7">
+              <label for="gen7">Gen 7</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gen8" class="genOptions" value="8">
+              <label for="gen8">Gen 8</label>
+            </div>
+          </section>
+          <section id="forms">
+            <input type="checkbox" id="regional-forms">
+            <label for="regional-forms">No Regional Forms</label>
+            <input type="checkbox" id="super-forms">
+            <label for="super-forms">No Mega / Gmax</label>
+            <input type="checkbox" id="alt-forms">
+            <label for="alt-forms">No Alternate Forms</label>
+          </section>
+          <input type="button" value="Randomize!" id="PokeStart">
+          <input type="button" value="Toggle Options" id="toggle-options">
+        </div>
+        <div>
+          <p class="centered">If you run into any bugs <a href="https://github.com/wychwitch/pokedraw/issues"> please leave an issue on the github!</a></p>
+          <p class="centered">made by <a href="https://atelierwy.ch">wych(witch)</a> 💜</p>
+        </div>
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="./script.js"></script>
+  </body>
 </html>
